@@ -1,0 +1,15 @@
+torch>=1.7.1
+torchvision>=0.8.2
+Pillow>=8.1.0
+tqdm>=4.41.1
+tifffile>=2020.9.3
+requests>=2.18.4
+rawpy>=0.16.0
+imageio>=2.9.0
+piq>=0.5.4
+albumentations>=0.5.2
+opencv-python>=4.5.4.60
+PyYAML>=3.13
+segmentation-models-pytorch==0.3.3
+tensorboard
+torchsummary
