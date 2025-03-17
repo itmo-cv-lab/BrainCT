@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from datasets import SegmentationDataset, get_transforms_segmentation
-from src.models import EnhancementModel
+from enhancement_models import EnhancementModel
 from utils import ConvNormActBlock, seed_everything
 
 

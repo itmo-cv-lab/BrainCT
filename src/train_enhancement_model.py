@@ -1,6 +1,7 @@
 """Main module to run experiments"""
 
 import argparse
+import logging
 import os
 
 import torch
@@ -13,9 +14,16 @@ from torch.utils.tensorboard import SummaryWriter
 from torchsummary import summary
 
 from datasets import EnhancementDataset, get_transforms_enhancement
-from models import EnhancementModel
+from enhancement_models import EnhancementModel
 from train import train_enhancement_model
 from utils import ConvNormActBlock, seed_everything
+
+logging.basicConfig(
+    filename="train_enhancement_model.log",
+    level=logging.INFO,
+    format="%(asctime)s %(message)s",
+)
+logger = logging.getLogger()
 
 
 def parse_args():
@@ -70,10 +78,8 @@ def main():
     )
     enhancement_model.to(device)
 
-    print(enhancement_model)
-    print()
-    print(summary(enhancement_model, input_size=(3, 500, 500)))
-    print()
+    logger.info(enhancement_model)
+    logger.info(summary(enhancement_model, input_size=(3, 500, 500)))
 
     criterions = dict()
     criterions["L1"] = nn.L1Loss()
@@ -81,10 +87,14 @@ def main():
     optimizer = torch.optim.AdamW(
         enhancement_model.parameters(),
         lr=float(config["training_params"]["optimizer_params"]["lr"]),
-        betas=(float(config["training_params"]["optimizer_params"]["beta1"]),
-               float(config["training_params"]["optimizer_params"]["beta2"])),
+        betas=(
+            float(config["training_params"]["optimizer_params"]["beta1"]),
+            float(config["training_params"]["optimizer_params"]["beta2"]),
+        ),
         eps=float(config["training_params"]["optimizer_params"]["eps"]),
-        weight_decay=float(config["training_params"]["optimizer_params"]["weight_decay"]),
+        weight_decay=float(
+            config["training_params"]["optimizer_params"]["weight_decay"]
+        ),
         amsgrad=False,
     )
 

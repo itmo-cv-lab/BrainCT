@@ -12,7 +12,7 @@ from torch.utils.tensorboard import SummaryWriter
 import segmentation_models_pytorch as smp
 
 from datasets import SegmentationDataset, get_transforms_segmentation
-from models import SegmentationModel
+from segmentation_models import SegmentationModel
 from train import train_segmentation_model
 from utils import seed_everything
 
@@ -25,7 +25,7 @@ def parse_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = parse_args()
 
     with open(args.config_path, encoding="utf-8") as f:
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     criterions = {}
     criterions["DiceLoss"] = smp.losses.DiceLoss(**config["segmentation_loss_params"])
     optimizer = torch.optim.AdamW(
-        enhancement_model.parameters(),
+        model.parameters(),
         lr=float(config["training_params"]["optimizer_params"]["lr"]),
         betas=(float(config["training_params"]["optimizer_params"]["beta1"]),
                float(config["training_params"]["optimizer_params"]["beta2"])),
